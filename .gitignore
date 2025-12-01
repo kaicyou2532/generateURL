@@ -1,0 +1,17 @@
+# Binaries
+/bin/
+/build/
+/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# Go modules
+vendor/
+
+# Local uploads
+uploads/
+
+# Docker artifacts
+*.log
