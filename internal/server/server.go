@@ -43,7 +43,23 @@ func (s *Server) registerRoutes() {
 	fileServer := http.StripPrefix("/files/", http.FileServer(http.Dir(s.cfg.UploadDir)))
 	s.mux.Handle("GET /files/", fileServer)
 
-	s.mux.HandleFunc("POST /api/v1/uploads", s.handleUpload)
+	s.mux.HandleFunc("POST /api/v1/uploads", s.withCORS(s.handleUpload))
+	s.mux.HandleFunc("OPTIONS /api/v1/uploads", s.withCORS(func(http.ResponseWriter, *http.Request) {}))
+}
+
+func (s *Server) withCORS(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type")
+		w.Header().Set("Access-Control-Allow-Methods", "GET,POST,OPTIONS")
+
+		if r.Method == http.MethodOptions {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
+
+		next(w, r)
+	}
 }
 
 func (s *Server) handleUpload(w http.ResponseWriter, r *http.Request) {
