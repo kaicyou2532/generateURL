@@ -17,13 +17,13 @@ Go製のシンプルなAPIサーバーです。`POST /api/v1/uploads` に画像�
 go test ./...
 
 # サーバー起動
-PORT=8080 go run ./cmd/server
+PORT=8000 go run ./cmd/server
 ```
 
 アップロード例:
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/uploads \
+curl -X POST http://localhost:8000/api/v1/uploads \
   -F "file=@sample.jpg"
 ```
 
@@ -35,9 +35,9 @@ docker build -t generateurl-api .
 
 # 実行
 mkdir -p uploads
-docker run --rm -p 8080:8080 \
+docker run --rm -p 8000:8000 \
   -v $(pwd)/uploads:/app/uploads \
-  -e BASE_URL=http://localhost:8080 \
+  -e BASE_URL=http://localhost:8000 \
   generateurl-api
 ```
 
@@ -48,11 +48,38 @@ mkdir -p uploads
 docker compose up --build
 ```
 
+## すぐ試す（ブラウザ）
+
+プロジェクトルートに `test_upload.html` を追加しました。サーバーが http://localhost:8000 で動作していれば、ブラウザで `file://` 経由、あるいはシンプルな静的サーバー（`python -m http.server` など）で開いてアップロードを試せます。
+
+## すぐ試す（スクリプト）
+
+`scripts/upload.sh` を追加しました。使い方:
+
+```bash
+# 実行権を付与
+chmod +x scripts/upload.sh
+
+# 例: ローカルサーバーにアップロード
+scripts/upload.sh http://localhost:8000 ./sample.jpg
+```
+
+## リモート環境での確認例
+
+現在 `http://133.2.37.149/ig` にデプロイ済みの場合、ブラウザ版/スクリプト版ともにベースURL欄にそのまま入力すれば動作します。
+
+```bash
+# CLI から直接リモート環境へPOST
+scripts/upload.sh http://133.2.37.149/ig ./sample.jpg
+```
+
+`test_upload.html` の入力欄にも `http://133.2.37.149/ig` をセットすると同様に試験できます。
+
 ## 設定変数
 
 | 変数 | デフォルト | 説明 |
 | --- | --- | --- |
-| `PORT` | `8080` | HTTPサーバーのポート。 |
+| `PORT` | `8000` | HTTPサーバーのポート。 |
 | `UPLOAD_DIR` | `uploads` | ファイル保存先。存在しない場合は作成されます。 |
 | `MAX_FILE_SIZE` | `10485760` (10MiB) | アップロード許容量 (バイト)。 |
 | `BASE_URL` | リクエストのホスト/スキーム | 発行するURLの基点。外部公開時に設定します。 |

@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	defaultPort        = 8080
+	defaultPort        = 8000
 	defaultUploadDir   = "uploads"
 	defaultMaxFileSize = int64(10 << 20) // 10 MiB
 )

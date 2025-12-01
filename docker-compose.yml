@@ -3,10 +3,10 @@ services:
     build: .
     image: generateurl-api:latest
     ports:
-      - "8080:8080"
+      - "8000:8000"
     environment:
-      - BASE_URL=http://localhost:8080
-      - PORT=8080
+      - BASE_URL=http://localhost:8000
+      - PORT=8000
       - UPLOAD_DIR=/data/uploads
     volumes:
       - ./uploads:/data/uploads
