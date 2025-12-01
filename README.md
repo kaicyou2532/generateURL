@@ -8,7 +8,7 @@ Go製のシンプルなAPIサーバーです。`POST /api/v1/uploads` に画像�
 | --- | --- | --- |
 | `GET /healthz` | 動作確認用のシンプルな応答を返します。 |
 | `POST /api/v1/uploads` | `file` フィールドに画像を含む `multipart/form-data` を送信すると、`{"url":"..."}` を返します。 |
-| `GET /files/{filename}` | アップロード済みのファイルを返します。 |
+  -e BASE_URL=http://133.2.37.149/ig \
 
 ## ローカル実行 (Go)
 
