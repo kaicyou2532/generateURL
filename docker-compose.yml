@@ -7,7 +7,7 @@ services:
     environment:
       - BASE_URL=http://localhost:8000
       - PORT=8000
-      - UPLOAD_DIR=/data/uploads
+      - UPLOAD_DIR=/app/uploads
     volumes:
-      - ./uploads:/data/uploads
+      - ./uploads:/app/uploads
     restart: unless-stopped

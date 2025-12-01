@@ -39,6 +39,10 @@ docker run --rm -p 8000:8000 \
   -v $(pwd)/uploads:/app/uploads \
   -e BASE_URL=http://localhost:8000 \
   generateurl-api
+
+# Linux ホストで権限エラーが出る場合
+# distroless の実行ユーザー (uid/gid 65532) に書き込み権限を与えてください
+sudo chown -R 65532:65532 uploads
 ```
 
 ## docker-compose
@@ -46,6 +50,9 @@ docker run --rm -p 8000:8000 \
 ```bash
 mkdir -p uploads
 docker compose up --build
+
+# すでに uploads ディレクトリをホストに作成している場合は書き込み権限を付与
+sudo chown -R 65532:65532 uploads
 ```
 
 ## すぐ試す（ブラウザ）
