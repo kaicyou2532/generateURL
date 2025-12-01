@@ -1,0 +1,4 @@
+# Exclude local artifacts from build context
+uploads
+.git
+*.log
