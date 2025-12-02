@@ -8,7 +8,6 @@ Go製のシンプルなAPIサーバーです。`POST /api/v1/uploads` に画像�
 | --- | --- | --- |
 | `GET /healthz` | 動作確認用のシンプルな応答を返します。 |
 | `POST /api/v1/uploads` | `file` フィールドに画像を含む `multipart/form-data` を送信すると、`{"url":"..."}` を返します。 |
-  -e BASE_URL=http://133.2.37.149/ig \
 
 ## ローカル実行 (Go)
 
@@ -35,9 +34,12 @@ docker build -t generateurl-api .
 
 # 実行
 mkdir -p uploads
+# 任意: 公開用URLを指定（例: https://example.com/ig ）
+# export BASE_URL=https://example.com/ig
+
 docker run --rm -p 8000:8000 \
   -v $(pwd)/uploads:/app/uploads \
-  -e BASE_URL=http://localhost:8000 \
+  -e BASE_URL=${BASE_URL:-http://localhost:8000} \
   generateurl-api
 
 # Linux ホストで権限エラーが出る場合
@@ -47,9 +49,12 @@ sudo chown -R 65532:65532 uploads
 
 ## docker-compose
 
+docker compose up --build
 ```bash
 mkdir -p uploads
-docker compose up --build
+
+# 公開URLに合わせてBASE_URLを指定（例: https://example.com/ig）
+BASE_URL=https://example.com/ig docker compose up --build
 
 # すでに uploads ディレクトリをホストに作成している場合は書き込み権限を付与
 sudo chown -R 65532:65532 uploads
@@ -73,14 +78,14 @@ scripts/upload.sh http://localhost:8000 ./sample.jpg
 
 ## リモート環境での確認例
 
-現在 `http://133.2.37.149/ig` にデプロイ済みの場合、ブラウザ版/スクリプト版ともにベースURL欄にそのまま入力すれば動作します。
+現在 `https://example.com/ig` のような公開URLにデプロイ済みの場合、ブラウザ版/スクリプト版ともにベースURL欄にそのまま入力すれば動作します。
 
 ```bash
 # CLI から直接リモート環境へPOST
-scripts/upload.sh http://133.2.37.149/ig ./sample.jpg
+scripts/upload.sh https://example.com/ig ./sample.jpg
 ```
 
-`test_upload.html` の入力欄にも `http://133.2.37.149/ig` をセットすると同様に試験できます。
+`test_upload.html` の入力欄にも `https://example.com/ig` をセットすると同様に試験できます。
 
 ## 設定変数
 
